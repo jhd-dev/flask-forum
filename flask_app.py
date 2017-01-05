@@ -56,7 +56,7 @@ def get():
 def submit_post():
 	print("yay")
 	posts.append({
-		"title": request.form.title
+		"title": request.form.title,
 		"snippet": request.form.content[:50] + '...',
 		"content": request.form.content,
 		"url": "./post/" + str(len(posts))
