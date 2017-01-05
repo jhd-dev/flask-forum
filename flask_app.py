@@ -55,13 +55,14 @@ def get():
 @app.route('/submit-post', methods=["GET", "POST"])
 def submit_post():
 	print("yay")
-	posts.append({
-		"title": request.form.title,
-		"snippet": request.form.content[:50] + '...',
-		"content": request.form.content,
-		"url": "./post/" + str(len(posts))
-	})
-	return view_post(len(posts) - 1)
+	#posts.append({
+	#	"title": request.form.title,
+	#	"snippet": request.form.content[:50] + '...',
+	#	"content": request.form.content,
+	#	"url": "./post/" + str(len(posts))
+	#})
+	#return view_post(len(posts) - 1)
+	return json.dumps(request.form)
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', port=int(os.environ.get("PORT")))
