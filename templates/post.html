@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>App Thing</title>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style/style.css') }}">
+</head>
+<body>
+	<div id="wrapper">
+		<div class="col-main">
+			<h1 class="page-head">Message Board</h1>
+			<div id="content">
+				<div class="post-full">
+					<h2 class="post-title">{{ post.title }}</h2>
+					<p class="post-content">{{ post.content }}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
