@@ -56,13 +56,12 @@ def get():
 def submit_post():
 	print("yay")
 	posts.append({
-		"title": "New Post",
-		"snippet": "Wooooooooaaaaaaaahhhhhh",
-		"content": "Lorem Ipsum ipbwvipwefhfiupreb wclekfhbugielqwhfev",
+		"title": request.form.title
+		"snippet": request.form.content[:50] + '...',
+		"content": request.form.content,
 		"url": "./post/" + str(len(posts))
 	})
 	return view_post(len(posts) - 1)
 
 if __name__ == '__main__':
-	print(os.environ)
 	app.run(host='0.0.0.0', port=int(os.environ.get("PORT")))
