@@ -7,6 +7,13 @@ client = MongoClient(os.environ.get("MONGO_URL"))
 db = client.forumdata
 posts = db.posts
 
+def toArray(cursor):
+	'''returns the documents from a cursor object as an array'''
+	arr = []
+	for doc in cursor:
+		arr.append(doc)
+	return arr
+
 @app.route('/')
 def get_html():
     return render_template('index.html')
@@ -21,7 +28,7 @@ def view_post(post_id):
 @app.route('/posts', methods=['GET'])
 def get():
 	data = json.dumps({
-		"posts": posts.find()
+		"posts": toArray(posts.find())
 	})
 	resp = Response(data, status=200, mimetype='application/json')
 	return resp
