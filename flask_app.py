@@ -3,23 +3,28 @@ from pymongo import MongoClient
 import os
 
 app = Flask(__name__)
-client = MongoClient(os.environ.get("MONGO_URL"))
+client = MongoClient('mongodb://datauser:datapassword@ds151068.mlab.com:51068/forumdata')#os.environ.get("MONGO_URL"))
 db = client.forumdata
 posts = db.posts
-print(os.environ.get("MONGO_URL"))
+print(posts)
+#print(os.environ.get("MONGO_URL"))
 
 def toArray(cursor):
 	'''returns the documents from a cursor object as an array'''
+	print("array!")
 	arr = []
 	for doc in cursor:
+		print("doc!")
+		print(doc)
 		arr.append(doc)
+	print(arr)
 	return arr
 
 @app.route('/')
 def get_html():
     return render_template('index.html')
 
-@app.route('/post/<int:post_id>')
+@app.route('/post/<post_id>')
 def view_post(post_id):
 	post = posts.find_one({
 		"_id": post_id
@@ -28,9 +33,13 @@ def view_post(post_id):
 
 @app.route('/posts', methods=['GET'])
 def get():
+	print(posts.find())
+	#print(toArray(posts.find()))
+	print(list(posts.find()))
 	data = json.dumps({
-		"posts": toArray(posts.find())
+		"posts": list(posts.find())
 	})
+	print("posts!")
 	print(data)
 	resp = Response(data, status=200, mimetype='application/json')
 	return resp
@@ -46,4 +55,4 @@ def submit_post():
 	return view_post(post_id)
 
 if __name__ == '__main__':
-	app.run(host='0.0.0.0', port=int(os.environ.get("PORT")))
+	app.run(host='0.0.0.0', port=5007)#int(os.environ.get("PORT")))
