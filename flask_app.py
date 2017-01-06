@@ -6,6 +6,7 @@ app = Flask(__name__)
 client = MongoClient(os.environ.get("MONGO_URL"))
 db = client.forumdata
 posts = db.posts
+print(os.environ.get("MONGO_URL"))
 
 def toArray(cursor):
 	'''returns the documents from a cursor object as an array'''
@@ -30,6 +31,7 @@ def get():
 	data = json.dumps({
 		"posts": toArray(posts.find())
 	})
+	print(data)
 	resp = Response(data, status=200, mimetype='application/json')
 	return resp
 
