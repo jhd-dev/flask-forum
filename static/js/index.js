@@ -11,10 +11,10 @@
 	}
 	document.addEventListener("DOMContentLoaded", function(){
 		getJSON("./posts", function(data){console.log(data);
-			data.posts.forEach(function(post, i){console.log(post);
+			data.posts.forEach(function(post, i){
 				var postDiv = document.createElement("div");
 					postDiv.classList.add("post");
-					var titleLink = document.createElement("a");
+					var titleLink = document.createElement("a");console.log(post, post.index);
 						titleLink.href = "./post/" + post.index;
 						var title = document.createElement("h3");
 							title.classList.add("post-title");
