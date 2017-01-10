@@ -25,6 +25,8 @@ body {
 }
 
 .form-label {
+	display: inline-block;
+	margin-left: 12px;
 	color: #eefeff;
 }
 

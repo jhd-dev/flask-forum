@@ -15,7 +15,7 @@
 				var postDiv = document.createElement("div");
 					postDiv.classList.add("post");
 					var titleLink = document.createElement("a");
-						titleLink.href = "./post/" + i;
+						titleLink.href = "./post/" + post.index;
 						var title = document.createElement("h3");
 							title.classList.add("post-title");
 							title.innerHTML = post.title;
