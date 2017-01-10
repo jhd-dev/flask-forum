@@ -1,19 +1,38 @@
 from flask import *
 from pymongo import MongoClient
+#from boto.s3.connection import S3Connection
 import os
 
 app = Flask(__name__)
-client = MongoClient(os.environ.get("MONGO_URL"))
-db = client.forumdata
-posts = db.posts
-print(os.environ.get("MONGO_URL"))
+#s3 = S3Connection(os.eviron['MONGO_URL'])
+#client = MongoClient(os.environ.get("MONGO_URL", ""))
 
-def toArray(cursor):
-	'''returns the documents from a cursor object as an array'''
-	arr = []
-	for doc in cursor:
-		arr.append(doc)
-	return arr
+posts = [
+	{
+		"title": "Hi There",
+		"snippet": "This is a test post...",
+		"content": "This is a test post. ertgfegrbv ipbwvipwefhfiupreb wclekfhbugielqwhfev",
+		"url": "./post/0"
+	},
+	{
+		"title": "Lorem Ipsum",
+		"snippet": "Lorem ipsum dolor sit amet, consectetur...",
+		"content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec suscipit pulvinar rhoncus. Nam dolor arcu, cursus venenatis malesuada at, dignissim sit amet tortor. Aliquam risus dui, dictum nec tellus a, feugiat blandit risus. Etiam bibendum condimentum tortor, vel eleifend mauris iaculis vitae. Aenean molestie rhoncus tincidunt. Nunc a vulputate urna. Praesent id purus metus. Pellentesque bibendum est in venenatis mollis.",
+		"url": "./post/1"
+	},
+	{
+		"title": "Hi There",
+		"snippet": "This is a test post...",
+		"content": "This is a test post. ertgfegrbv ipbwvipwefhfiupreb wclekfhbugielqwhfev",
+		"url": "./post/2"
+	},
+	{
+		"title": "Lorem Ipsum",
+		"snippet": "Lorem ipsum dolor sit amet, consectetur...",
+		"content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec suscipit pulvinar rhoncus. Nam dolor arcu, cursus venenatis malesuada at, dignissim sit amet tortor. Aliquam risus dui, dictum nec tellus a, feugiat blandit risus. Etiam bibendum condimentum tortor, vel eleifend mauris iaculis vitae. Aenean molestie rhoncus tincidunt. Nunc a vulputate urna. Praesent id purus metus. Pellentesque bibendum est in venenatis mollis.",
+		"url": "./post/3"
+	},
+]
 
 @app.route('/')
 def get_html():
@@ -21,29 +40,29 @@ def get_html():
 
 @app.route('/post/<int:post_id>')
 def view_post(post_id):
-	post = posts.find_one({
-		"_id": post_id
-	})
-	return render_template('post.html', post=post)
+	post = posts[post_id]
+	print(post_id)
+	return render_template('post.html', post=posts[post_id])
 
 @app.route('/posts', methods=['GET'])
 def get():
 	data = json.dumps({
-		"posts": toArray(posts.find())
+		"posts": posts
 	})
-	print(data)
 	resp = Response(data, status=200, mimetype='application/json')
 	return resp
 
 @app.route('/submit-post', methods=["GET", "POST"])
 def submit_post():
-	post_data = {
+	print("yay")
+	posts.append({
 		"title": request.form["title"],
-		"snippet": request.form["content"][:100] + '...',
-		"content": request.form["content"]
-	}
-	post_id = posts.insert_one(post_data).inserted_id
-	return view_post(post_id)
+		"snippet": request.form["content"][:50] + '...',
+		"content": request.form["content"],
+		"url": "./post/" + str(len(posts))
+	})
+	return view_post(len(posts) - 1)
+	#return json.dumps(request.form)
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', port=int(os.environ.get("PORT")))
