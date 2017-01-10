@@ -20,11 +20,12 @@ def view_post(post_id):
 
 @app.route('/posts', methods=['GET'])
 def get():
-	data = json.dumps({
-		"posts": list(posts.find())
-	})
+	data = {
+		"posts": list(posts.find({}, {"_id": False}))
+	}
+	print(data)
 	resp = Response(data, status=200, mimetype='application/json')
-	return resp
+	return jsonify(data)
 
 @app.route('/submit-post', methods=["GET", "POST"])
 def submit_post():
